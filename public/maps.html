@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maps</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat; min-height: 100vh;">
+    <button onclick="window.location.href='index.html'" style="position: absolute; top: 30px; left: 40px; padding: 10px 24px; font-size: 1.1rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.85); cursor: pointer;">Home</button>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
+        <h2 style="margin-top: 100px; color: #3e2723; background: rgba(255,255,255,0.92); padding: 16px 32px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);">Map of the Known Dwarven Realms</h2>
+        <div style="position: relative; display: inline-block;">
+            <img src="aiIMAGESforMEYBOOK/Map%20of%20the%20Known%20Dwarven%20Realms%20(1).jpg" alt="Map of the Known Dwarven Realms" style="max-width: 90vw; max-height: 75vh; margin: 40px 0; border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); background: #fff; padding: 12px;" usemap="#dwarvenmap">
+            <map name="dwarvenmap">
+                <area shape="rect" coords="600,340,700,400" href="#tal-tormind" alt="Tal-Tormind" title="Tal-Tormind" onclick="showMapInfo('Tal-Tormind')">
+                <area shape="rect" coords="650,90,800,180" href="#marches-of-ice" alt="Marches of Ice" title="Marches of Ice" onclick="showMapInfo('Marches of Ice')">
+                <area shape="rect" coords="900,350,1050,420" href="#land-of-lakes" alt="Land of Lakes" title="Land of Lakes" onclick="showMapInfo('Land of Lakes')">
+                <area shape="rect" coords="520,520,670,620" href="#great-forest" alt="Great forest" title="Great forest" onclick="showMapInfo('Great forest')">
+                <area shape="rect" coords="180,400,330,500" href="#moss-hills" alt="The moss hills" title="The moss hills" onclick="showMapInfo('The moss hills')">
+            </map>
+            <!-- Region labels and indicators, now fixed in place -->
+            <div style="position:absolute; left:650px; top:370px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.92); border-radius:8px; padding:6px 18px; font-weight:bold; color:#3e2723; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <span style="font-size:1.1em;">Tal-Tormind</span>
+                <span style="display:inline-block; width:12px; height:12px; background:#b71c1c; border-radius:50%; margin-left:10px; border:2px solid #fff;"></span>
+            </div>
+            <div style="position:absolute; left:725px; top:135px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.92); border-radius:8px; padding:6px 18px; font-weight:bold; color:#3e2723; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <span style="font-size:1.1em;">Marches of Ice</span>
+                <span style="display:inline-block; width:12px; height:12px; background:#1976d2; border-radius:50%; margin-left:10px; border:2px solid #fff;"></span>
+            </div>
+            <div style="position:absolute; left:975px; top:385px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.92); border-radius:8px; padding:6px 18px; font-weight:bold; color:#3e2723; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <span style="font-size:1.1em;">Land of Lakes</span>
+                <span style="display:inline-block; width:12px; height:12px; background:#388e3c; border-radius:50%; margin-left:10px; border:2px solid #fff;"></span>
+            </div>
+            <div style="position:absolute; left:600px; top:570px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.92); border-radius:8px; padding:6px 18px; font-weight:bold; color:#3e2723; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <span style="font-size:1.1em;">Great forest</span>
+                <span style="display:inline-block; width:12px; height:12px; background:#689f38; border-radius:50%; margin-left:10px; border:2px solid #fff;"></span>
+            </div>
+            <div style="position:absolute; left:255px; top:450px; transform:translate(-50%,-50%); background:rgba(255,255,255,0.92); border-radius:8px; padding:6px 18px; font-weight:bold; color:#3e2723; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                <span style="font-size:1.1em;">The moss hills</span>
+                <span style="display:inline-block; width:12px; height:12px; background:#8d6e63; border-radius:50%; margin-left:10px; border:2px solid #fff;"></span>
+            </div>
+            <div id="map-info" style="position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.97); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 18px 28px; min-width: 220px; display: none; z-index: 10;"></div>
+        </div>
+    </div>
+    <script>
+      // Function to show map info
+      function showMapInfo(text) {
+        var info = document.getElementById('map-info');
+        info.innerHTML = text + '<br><br><button onclick="this.parentElement.style.display=\'none\'" style="margin-top:10px; padding:4px 16px; border-radius:6px; border:none; background:#eee; cursor:pointer;">Close</button>';
+        info.style.display = 'block';
+      }
+    </script>
+</body>
+</html>
