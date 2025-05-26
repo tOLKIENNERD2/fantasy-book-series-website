@@ -6,46 +6,41 @@
   <title>The Realms of the Dwarves - Game</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      background: url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat;
+      padding: 0;
+    }
+    body {
       min-height: 100vh;
+      width: 100vw;
+      background: url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+    .game-flex-center {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 70px;
+      box-sizing: border-box;
     }
     #game-container {
-      max-width: 600px;
-      margin: 100px auto 0 auto;
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.97);
       border-radius: 18px;
       box-shadow: 0 6px 32px rgba(0,0,0,0.18);
       padding: 36px 32px 32px 32px;
-      min-height: 320px;
-    }
-    #game-text {
-      font-size: 1.15rem;
-      margin-bottom: 32px;
-      min-height: 120px;
-      color: #3e2723;
-    }
-    .game-choice {
-      display: block;
-      margin: 16px 0;
-      padding: 12px 24px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: none;
-      background: #8d6e63;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .game-choice:hover {
-      background: #6d4c41;
-    }
-    #restart-btn {
-      margin-top: 32px;
-      display: none;
-      background: #388e3c;
+      min-width: 980px;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     #game-title {
       text-align: center;
@@ -54,20 +49,83 @@
       margin-bottom: 24px;
       color: #5d4037;
     }
+    #maze-canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+      background: #e7dac6;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    .game-bottom-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+    }
+    #found-counter {
+      font-size: 1.2rem;
+      color: #5d4037;
+      font-weight: bold;
+    }
+    #restart-btn {
+      padding: 10px 28px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      background: #388e3c;
+      color: #fff;
+      cursor: pointer;
+    }
+    #found-books {
+      margin-top: 18px;
+      display: flex;
+      gap: 18px;
+    }
+    nav {
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(120, 72, 24, 0.75) url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat;
+      box-shadow: none;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      overflow: hidden;
+      backdrop-filter: blur(2px);
+    }
+    nav button {
+      margin-left: 40px;
+      padding: 12px 28px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.7);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <nav style="width:100vw; position:fixed; top:0; left:0; z-index:100; background: rgba(120, 72, 24, 0.75) url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat; box-shadow: none; display:flex; align-items:center; height:70px; border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; overflow: hidden; backdrop-filter: blur(2px);">
-    <button onclick="window.location.href='index.html'" style="margin-left:40px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Home</button>
+  <nav>
+    <button onclick="window.location.href='index.html'">Home</button>
   </nav>
-  <div id="game-container" style="max-width:900px;margin:100px auto 0 auto;background:rgba(255,255,255,0.97);border-radius:18px;box-shadow:0 6px 32px rgba(0,0,0,0.18);padding:36px 32px 32px 32px;min-height:480px;">
-    <div id="game-title" style="text-align:center;font-size:2rem;font-weight:bold;margin-bottom:24px;color:#5d4037;">Tal-Tormind Library: Labyrinth Book Hunt</div>
-    <canvas id="maze-canvas" width="960" height="640" style="display:block;margin:0 auto;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.12);background:#e7dac6;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;"></canvas>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;">
-      <div id="found-counter" style="font-size:1.2rem;color:#5d4037;font-weight:bold;">Found 0/5 Books</div>
-      <button id="restart-btn" style="padding:10px 28px;font-size:1.1rem;border-radius:8px;border:none;background:#388e3c;color:#fff;cursor:pointer;">Restart</button>
+  <div class="game-flex-center">
+    <div id="game-container">
+      <div id="game-title">Tal-Tormind Library: Labyrinth Book Hunt</div>
+      <canvas id="maze-canvas" width="960" height="640"></canvas>
+      <div class="game-bottom-bar">
+        <div id="found-counter">Found 0/5 Books</div>
+        <button id="restart-btn">Restart</button>
+      </div>
+      <div id="found-books"></div>
     </div>
-    <div id="found-books" style="margin-top:18px;display:flex;gap:18px;"></div>
   </div>
   <script>
     // Maze settings
@@ -103,86 +161,59 @@
     function drawMaze() {
       const ctx = document.getElementById('maze-canvas').getContext('2d');
       ctx.clearRect(0,0,COLS*CELL,ROWS*CELL);
+      // Draw maze tiles
       for(let y=0;y<ROWS;y++) for(let x=0;x<COLS;x++) {
-        if(!visible[y][x]) {
-          ctx.fillStyle = '#222';
-          ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
-          continue;
-        }
         if(maze[y][x]===1) {
-          ctx.fillStyle = '#b8935a';
+          ctx.fillStyle = '#a07b50';
           ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
-          for(let i=0;i<4;i++) {
-            ctx.fillStyle = i%2===0 ? '#c9a86a' : '#a67c43';
-            ctx.fillRect(x*CELL+4+i*8, y*CELL, 4, CELL);
-          }
-          const bookColors = ['#3a6ea5','#b02e26','#e3d26f','#5e3a1c','#4e7e3e','#d1bfa7'];
-          for(let i=0;i<6;i++) {
-            ctx.fillStyle = bookColors[i];
-            ctx.fillRect(x*CELL+6+i*5, y*CELL+12, 4, 24);
-          }
-          for(let n=0;n<30;n++) {
-            ctx.fillStyle = ['#b8935a','#c9a86a','#a67c43','#e3d26f'][Math.floor(Math.random()*4)];
-            ctx.globalAlpha = 0.18;
-            ctx.fillRect(x*CELL+Math.floor(Math.random()*CELL), y*CELL+Math.floor(Math.random()*CELL), 2, 2);
-            ctx.globalAlpha = 1.0;
-          }
+          ctx.strokeStyle = '#7c5c3b';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x*CELL+1, y*CELL+1, CELL-2, CELL-2);
         } else {
-          ctx.fillStyle = (x%2===0) ? '#e7dac6' : '#e3cfa6';
-          ctx.fillRect(x*CELL,y*CELL,CELL,CELL);
-          ctx.fillStyle = '#c2b280';
-          ctx.fillRect(x*CELL, y*CELL+CELL-8, CELL, 3);
-          for(let n=0;n<10;n++) {
-            ctx.fillStyle = ['#e7dac6','#e3cfa6','#c2b280'][Math.floor(Math.random()*3)];
-            ctx.globalAlpha = 0.13;
-            ctx.fillRect(x*CELL+Math.floor(Math.random()*CELL), y*CELL+Math.floor(Math.random()*CELL), 2, 2);
-            ctx.globalAlpha = 1.0;
-          }
+          ctx.fillStyle = '#e7dac6';
+          ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
         }
       }
-      // Draw books (glowing, only if visible and not found)
+      // Draw books (with glow)
       for(let i=0;i<books.length;i++) {
         let b=books[i];
         if(!found.includes(i) && visible[b.y][b.x]) {
           ctx.save();
           ctx.shadowColor = '#ffe066';
-          ctx.shadowBlur = 18;
-          // Draw the actual book image (OLED effect with glow)
-          ctx.imageSmoothingEnabled = false;
+          ctx.shadowBlur = 16;
           ctx.drawImage(bookImg, b.x*CELL+8, b.y*CELL+8, 24, 24);
           ctx.shadowBlur = 0;
           ctx.restore();
-          // Draw X button
+        }
+      }
+      // Draw player (with soft shadow)
+      ctx.save();
+      ctx.shadowColor = '#222a';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = '#5ac6e2';
+      ctx.beginPath();
+      ctx.arc(player.x*CELL+20, player.y*CELL+20, 14, 0, 2*Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+      // Draw soft fog overlay
+      for(let y=0;y<ROWS;y++) for(let x=0;x<COLS;x++) {
+        if(!visible[y][x]) {
+          // Soft fog with blurred edge
+          let grad = ctx.createRadialGradient(
+            x*CELL+CELL/2, y*CELL+CELL/2, CELL*0.2,
+            x*CELL+CELL/2, y*CELL+CELL/2, CELL*0.7
+          );
+          grad.addColorStop(0, 'rgba(255,255,255,0.55)');
+          grad.addColorStop(0.7, 'rgba(255,255,255,0.38)');
+          grad.addColorStop(1, 'rgba(255,255,255,0.01)');
           ctx.save();
-          ctx.globalAlpha = 0.85;
-          ctx.fillStyle = '#fff';
-          ctx.beginPath();
-          ctx.arc(b.x*CELL+20, b.y*CELL+12, 8, 0, 2*Math.PI);
-          ctx.fill();
-          ctx.strokeStyle = '#d32f2f';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(b.x*CELL+15, b.y*CELL+8);
-          ctx.lineTo(b.x*CELL+25, b.y*CELL+16);
-          ctx.moveTo(b.x*CELL+25, b.y*CELL+8);
-          ctx.lineTo(b.x*CELL+15, b.y*CELL+16);
-          ctx.stroke();
+          ctx.globalAlpha = 0.95;
+          ctx.fillStyle = grad;
+          ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
           ctx.restore();
         }
       }
-      // Draw player
-      ctx.save();
-      ctx.fillStyle = '#f9d7b5';
-      ctx.fillRect(player.x*CELL+13, player.y*CELL+10, 14, 14);
-      ctx.fillStyle = '#388e3c';
-      ctx.fillRect(player.x*CELL+13, player.y*CELL+24, 14, 18);
-      ctx.fillStyle = '#1976d2';
-      ctx.fillRect(player.x*CELL+13, player.y*CELL+42, 6, 10);
-      ctx.fillRect(player.x*CELL+21, player.y*CELL+42, 6, 10);
-      ctx.fillStyle = '#f9d7b5';
-      ctx.fillRect(player.x*CELL+7, player.y*CELL+26, 6, 12);
-      ctx.fillRect(player.x*CELL+27, player.y*CELL+26, 6, 12);
-      ctx.restore();
     }
     function movePlayer(dx,dy) {
       let nx=player.x+dx, ny=player.y+dy;
@@ -239,7 +270,13 @@
         }
       }
     });
+    // Fix: Only start drawing after bookImg is loaded
     bookImg.onload = () => { restartGame(); };
+    window.addEventListener('DOMContentLoaded', () => {
+      if (bookImg.complete) {
+        restartGame();
+      }
+    });
   </script>
 </body>
 </html>

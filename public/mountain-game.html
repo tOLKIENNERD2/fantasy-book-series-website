@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tal-Tormind Mountain Adventure</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      background: url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    nav {
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(120, 72, 24, 0.75) url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background%20.jpg') center center/cover no-repeat;
+      box-shadow: none;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      overflow: hidden;
+      backdrop-filter: blur(2px);
+    }
+    nav button {
+      margin-left: 40px;
+      padding: 12px 28px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.7);
+      cursor: pointer;
+    }
+    .mountain-game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+    #mountain-canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+      background: #e7dac6;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    .mountain-game-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+      color: #5d4037;
+    }
+    .mountain-game-instructions {
+      background: rgba(255,255,255,0.92);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      padding: 18px 32px;
+      margin-bottom: 18px;
+      max-width: 700px;
+      color: #3e2723;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <button onclick="window.location.href='index.html'">Home</button>
+    <button onclick="window.location.href='game.html'">Library Game</button>
+  </nav>
+  <div class="mountain-game-container">
+    <div class="mountain-game-title">Tal-Tormind Mountain Adventure</div>
+    <div class="mountain-game-instructions">
+      Explore the legendary mountain of Tal-Tormind! Climb from the base to the summit, discover secret rooms, avoid hazards, and collect ancient treasures. Use the arrow keys or WASD to move. Reach the top to win!
+    </div>
+    <canvas id="mountain-canvas" width="800" height="600"></canvas>
+  </div>
+  <script>
+    // Simple platformer/maze game for Tal-Tormind Mountain
+    const canvas = document.getElementById('mountain-canvas');
+    const ctx = canvas.getContext('2d');
+    const TILE = 40;
+    const COLS = 20, ROWS = 15;
+    // 0: empty, 1: wall, 2: treasure, 3: hazard
+    let mountainMap = Array.from({length:ROWS}, (_,y) =>
+      Array.from({length:COLS}, (_,x) =>
+        (y === ROWS-1 || x === 0 || x === COLS-1) ? 1 : 0
+      )
+    );
+    // Add some platforms, rooms, treasures, hazards
+    for(let y=ROWS-2; y>0; y-=2) {
+      for(let x=2; x<COLS-2; x++) {
+        if(Math.random() > 0.7) mountainMap[y][x] = 1;
+      }
+      // Place treasures
+      if(Math.random() > 0.5) mountainMap[y][Math.floor(Math.random()*(COLS-4))+2] = 2;
+      // Place hazards
+      if(Math.random() > 0.6) mountainMap[y][Math.floor(Math.random()*(COLS-4))+2] = 3;
+    }
+    // Player
+    let player = {x: 1, y: ROWS-2, treasures: 0};
+    // Draw function
+    function drawMountain() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) {
+        let tx = x*TILE, ty = y*TILE;
+        if(mountainMap[y][x] === 1) {
+          ctx.fillStyle = '#7c5c3b';
+          ctx.fillRect(tx, ty, TILE, TILE);
+          ctx.strokeStyle = '#a07b50';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(tx+1, ty+1, TILE-2, TILE-2);
+        } else if(mountainMap[y][x] === 2) {
+          ctx.save();
+          ctx.shadowColor = '#ffe066';
+          ctx.shadowBlur = 12;
+          ctx.fillStyle = '#e2c45a';
+          ctx.beginPath();
+          ctx.arc(tx+TILE/2, ty+TILE/2, 10, 0, 2*Math.PI);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.restore();
+        } else if(mountainMap[y][x] === 3) {
+          ctx.fillStyle = '#b02e26';
+          ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+        }
+      }
+      // Draw player
+      ctx.save();
+      ctx.shadowColor = '#222a';
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = '#5ac6e2';
+      ctx.beginPath();
+      ctx.arc(player.x*TILE+TILE/2, player.y*TILE+TILE/2, 14, 0, 2*Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+      // Draw treasures collected
+      ctx.fillStyle = '#5d4037';
+      ctx.font = '20px Segoe UI';
+      ctx.fillText(`Treasures: ${player.treasures}`, 20, 30);
+      // Win message
+      if(player.y === 1) {
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.fillRect(200, 200, 400, 120);
+        ctx.fillStyle = '#388e3c';
+        ctx.font = '32px Segoe UI';
+        ctx.fillText('You reached the summit!', 250, 260);
+        ctx.font = '22px Segoe UI';
+        ctx.fillStyle = '#5d4037';
+        ctx.fillText(`Treasures collected: ${player.treasures}`, 290, 300);
+      }
+    }
+    // Movement
+    function movePlayer(dx, dy) {
+      let nx = player.x + dx, ny = player.y + dy;
+      if(nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return;
+      if(mountainMap[ny][nx] === 1) return;
+      // Collect treasure
+      if(mountainMap[ny][nx] === 2) {
+        player.treasures++;
+        mountainMap[ny][nx] = 0;
+      }
+      // Hit hazard
+      if(mountainMap[ny][nx] === 3) {
+        player.x = 1; player.y = ROWS-2; player.treasures = 0;
+        return;
+      }
+      player.x = nx; player.y = ny;
+      drawMountain();
+    }
+    document.addEventListener('keydown', e => {
+      if(player.y === 1) return;
+      if(['ArrowUp','w','W'].includes(e.key)) movePlayer(0,-1);
+      else if(['ArrowDown','s','S'].includes(e.key)) movePlayer(0,1);
+      else if(['ArrowLeft','a','A'].includes(e.key)) movePlayer(-1,0);
+      else if(['ArrowRight','d','D'].includes(e.key)) movePlayer(1,0);
+    });
+    drawMountain();
+  </script>
+</body>
+</html>

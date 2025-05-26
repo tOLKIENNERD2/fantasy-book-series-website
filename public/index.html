@@ -9,18 +9,19 @@
 <body style="background: none; min-height: 100vh; margin:0;">
     <div id="root"></div>
     <img src="aiIMAGESforMEYBOOK/Tal-Tormind.jpeg" alt="Tal-Tormind" style="position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-1;">
-    <div style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:-0.5; pointer-events:none; background:rgba(255,255,255,0.18); backdrop-filter: blur(8px);"></div>
     <nav style="width:100vw; position:fixed; top:0; left:0; z-index:100; background: rgba(120, 72, 24, 0.75) url('aiIMAGESforMEYBOOK/A%20rich%20wooden%20background.jpg') center center/cover no-repeat; box-shadow: none; display:flex; align-items:center; height:70px; border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; overflow: hidden; backdrop-filter: blur(2px);">
         <button id="show-images-btn" style="margin-left:40px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Images</button>
         <button id="show-animals-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Animals</button>
         <button id="show-maps-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Maps</button>
         <button id="show-game-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Video Game</button>
+        <button id="show-mountain-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Mountain Game</button>
     </nav>
     <script>
         document.getElementById('show-images-btn').onclick = function() { window.location.href = 'images.html'; };
         document.getElementById('show-animals-btn').onclick = function() { window.location.href = 'animals.html'; };
         document.getElementById('show-maps-btn').onclick = function() { window.location.href = 'maps.html'; };
         document.getElementById('show-game-btn').onclick = function() { window.location.href = 'game.html'; };
+        document.getElementById('show-mountain-btn').onclick = function() { window.location.href = 'mountain-game.html'; };
     </script>
     <!-- Homepage content can go here -->
     <script src="index.js"></script>
