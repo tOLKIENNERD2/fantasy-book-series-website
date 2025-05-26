@@ -108,61 +108,172 @@
       // Place hazards
       if(Math.random() > 0.6) mountainMap[y][Math.floor(Math.random()*(COLS-4))+2] = 3;
     }
+    // Add more features from the book
+    // Add a cave entrance near the top
+    mountainMap[2][Math.floor(COLS/2)] = 4; // 4: cave entrance
+    // Add a king's hall at the summit
+    mountainMap[1][Math.floor(COLS/2)] = 5; // 5: king's hall
+    // Add a library room
+    mountainMap[4][3] = 6; // 6: library
+    // Add a forge room
+    mountainMap[6][COLS-4] = 7; // 7: forge
+    // Add a market room
+    mountainMap[8][Math.floor(COLS/2)] = 8; // 8: market
+    // Add a healing plant (restores treasures if hit by hazard)
+    mountainMap[ROWS-4][COLS-3] = 9; // 9: healing plant
+
+    // Add page state
+    let page = 'mountain'; // 'mountain', 'cave', 'library', 'forge', 'market', 'king'
+
     // Player
     let player = {x: 1, y: ROWS-2, treasures: 0};
     // Draw function
     function drawMountain() {
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) {
-        let tx = x*TILE, ty = y*TILE;
-        if(mountainMap[y][x] === 1) {
-          ctx.fillStyle = '#7c5c3b';
-          ctx.fillRect(tx, ty, TILE, TILE);
-          ctx.strokeStyle = '#a07b50';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(tx+1, ty+1, TILE-2, TILE-2);
-        } else if(mountainMap[y][x] === 2) {
-          ctx.save();
-          ctx.shadowColor = '#ffe066';
-          ctx.shadowBlur = 12;
-          ctx.fillStyle = '#e2c45a';
-          ctx.beginPath();
-          ctx.arc(tx+TILE/2, ty+TILE/2, 10, 0, 2*Math.PI);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          ctx.restore();
-        } else if(mountainMap[y][x] === 3) {
-          ctx.fillStyle = '#b02e26';
-          ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+      if(page === 'mountain') {
+        for(let y=0; y<ROWS; y++) for(let x=0; x<COLS; x++) {
+          let tx = x*TILE, ty = y*TILE;
+          if(mountainMap[y][x] === 1) {
+            ctx.fillStyle = '#7c5c3b';
+            ctx.fillRect(tx, ty, TILE, TILE);
+            ctx.strokeStyle = '#a07b50';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(tx+1, ty+1, TILE-2, TILE-2);
+          } else if(mountainMap[y][x] === 2) {
+            ctx.save();
+            ctx.shadowColor = '#ffe066';
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = '#e2c45a';
+            ctx.beginPath();
+            ctx.arc(tx+TILE/2, ty+TILE/2, 10, 0, 2*Math.PI);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.restore();
+          } else if(mountainMap[y][x] === 3) {
+            ctx.fillStyle = '#b02e26';
+            ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+          } else if(mountainMap[y][x] === 4) {
+            // Cave entrance
+            ctx.fillStyle = '#444';
+            ctx.beginPath();
+            ctx.arc(tx+TILE/2, ty+TILE/2, 16, 0, Math.PI, true);
+            ctx.lineTo(tx+TILE/2+16, ty+TILE/2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#222';
+            ctx.stroke();
+          } else if(mountainMap[y][x] === 5) {
+            // King's hall
+            ctx.fillStyle = '#bfae7e';
+            ctx.fillRect(tx+6, ty+6, TILE-12, TILE-12);
+            ctx.strokeStyle = '#5d4037';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(tx+6, ty+6, TILE-12, TILE-12);
+            ctx.fillStyle = '#5d4037';
+            ctx.font = 'bold 16px Segoe UI';
+            ctx.fillText('👑', tx+TILE/2-8, ty+TILE/2+8);
+          } else if(mountainMap[y][x] === 6) {
+            // Library
+            ctx.fillStyle = '#e3d26f';
+            ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.strokeStyle = '#8d6e63';
+            ctx.strokeRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.fillStyle = '#8d6e63';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('📚', tx+TILE/2-10, ty+TILE/2+8);
+          } else if(mountainMap[y][x] === 7) {
+            // Forge
+            ctx.fillStyle = '#d2691e';
+            ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.strokeStyle = '#a0522d';
+            ctx.strokeRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.fillStyle = '#a0522d';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('⚒️', tx+TILE/2-10, ty+TILE/2+8);
+          } else if(mountainMap[y][x] === 8) {
+            // Market
+            ctx.fillStyle = '#a7d17b';
+            ctx.fillRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.strokeStyle = '#5d8a3c';
+            ctx.strokeRect(tx+8, ty+8, TILE-16, TILE-16);
+            ctx.fillStyle = '#5d8a3c';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('🏪', tx+TILE/2-10, ty+TILE/2+8);
+          } else if(mountainMap[y][x] === 9) {
+            // Healing plant
+            ctx.fillStyle = '#6fcf97';
+            ctx.beginPath();
+            ctx.arc(tx+TILE/2, ty+TILE/2, 10, 0, 2*Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#388e3c';
+            ctx.stroke();
+            ctx.fillStyle = '#388e3c';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('🌱', tx+TILE/2-10, ty+TILE/2+8);
+          }
         }
-      }
-      // Draw player
-      ctx.save();
-      ctx.shadowColor = '#222a';
-      ctx.shadowBlur = 8;
-      ctx.fillStyle = '#5ac6e2';
-      ctx.beginPath();
-      ctx.arc(player.x*TILE+TILE/2, player.y*TILE+TILE/2, 14, 0, 2*Math.PI);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.restore();
-      // Draw treasures collected
-      ctx.fillStyle = '#5d4037';
-      ctx.font = '20px Segoe UI';
-      ctx.fillText(`Treasures: ${player.treasures}`, 20, 30);
-      // Win message
-      if(player.y === 1) {
-        ctx.fillStyle = 'rgba(255,255,255,0.95)';
-        ctx.fillRect(200, 200, 400, 120);
-        ctx.fillStyle = '#388e3c';
-        ctx.font = '32px Segoe UI';
-        ctx.fillText('You reached the summit!', 250, 260);
-        ctx.font = '22px Segoe UI';
+        // Draw player
+        ctx.save();
+        ctx.shadowColor = '#222a';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#5ac6e2';
+        ctx.beginPath();
+        ctx.arc(player.x*TILE+TILE/2, player.y*TILE+TILE/2, 14, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.restore();
+        // Draw treasures collected
         ctx.fillStyle = '#5d4037';
-        ctx.fillText(`Treasures collected: ${player.treasures}`, 290, 300);
+        ctx.font = '20px Segoe UI';
+        ctx.fillText(`Treasures: ${player.treasures}`, 20, 30);
+        // Win message
+        if(player.y === 1) {
+          ctx.fillStyle = 'rgba(255,255,255,0.95)';
+          ctx.fillRect(200, 200, 400, 120);
+          ctx.fillStyle = '#388e3c';
+          ctx.font = '32px Segoe UI';
+          ctx.fillText('You reached the summit!', 250, 260);
+          ctx.font = '22px Segoe UI';
+          ctx.fillStyle = '#5d4037';
+          ctx.fillText(`Treasures collected: ${player.treasures}`, 290, 300);
+        }
+      } else if(page === 'cave') {
+        drawRoom('Cave Entrance', 'You are in a dark cave beneath Tal-Tormind. There may be secrets here.', '#444', '🌑', () => { page = 'mountain'; drawMountain(); });
+      } else if(page === 'library') {
+        drawRoom('Great Library', 'You are in the legendary library of Tal-Tormind. Ancient tomes line the walls.', '#e3d26f', '📚', () => { page = 'mountain'; drawMountain(); });
+      } else if(page === 'forge') {
+        drawRoom('Dwarven Forge', 'You are in the dwarven forge. The air is hot and filled with the sound of hammers.', '#d2691e', '⚒️', () => { page = 'mountain'; drawMountain(); });
+      } else if(page === 'market') {
+        drawRoom('Mountain Market', 'You are in the bustling mountain market. Dwarves trade goods and stories.', '#a7d17b', '🏪', () => { page = 'mountain'; drawMountain(); });
+      } else if(page === 'king') {
+        drawRoom('King\'s Hall', 'You stand in the grand hall of the dwarven king. Glory and history surround you.', '#bfae7e', '👑', () => { page = 'mountain'; drawMountain(); });
       }
     }
-    // Movement
+    function drawRoom(title, desc, color, icon, onBack) {
+      ctx.fillStyle = color;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 36px Segoe UI';
+      ctx.fillText(title, 60, 100);
+      ctx.font = '60px Segoe UI';
+      ctx.fillText(icon, 60, 200);
+      ctx.font = '22px Segoe UI';
+      ctx.fillStyle = '#222';
+      ctx.fillText(desc, 60, 260);
+      // Draw back button
+      ctx.fillStyle = '#388e3c';
+      ctx.fillRect(60, 320, 180, 48);
+      ctx.font = 'bold 22px Segoe UI';
+      ctx.fillStyle = '#fff';
+      ctx.fillText('Back to Mountain', 70, 352);
+      // Add click event for back button
+      canvas.onclick = function(e) {
+        if(e.offsetX >= 60 && e.offsetX <= 240 && e.offsetY >= 320 && e.offsetY <= 368) {
+          canvas.onclick = null;
+          onBack();
+        }
+      };
+    }
     function movePlayer(dx, dy) {
       let nx = player.x + dx, ny = player.y + dy;
       if(nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return;
@@ -176,6 +287,32 @@
       if(mountainMap[ny][nx] === 3) {
         player.x = 1; player.y = ROWS-2; player.treasures = 0;
         return;
+      }
+      // Enter cave entrance
+      if(mountainMap[ny][nx] === 4) {
+        page = 'cave'; drawMountain(); return;
+      }
+      // Enter king's hall
+      if(mountainMap[ny][nx] === 5) {
+        page = 'king'; drawMountain(); return;
+      }
+      // Enter library
+      if(mountainMap[ny][nx] === 6) {
+        page = 'library'; drawMountain(); return;
+      }
+      // Enter forge
+      if(mountainMap[ny][nx] === 7) {
+        page = 'forge'; drawMountain(); return;
+      }
+      // Enter market
+      if(mountainMap[ny][nx] === 8) {
+        page = 'market'; drawMountain(); return;
+      }
+      // Healing plant
+      if(mountainMap[ny][nx] === 9) {
+        player.treasures = Math.max(player.treasures, 1);
+        alert('You found a healing plant! If you lost treasures, you recover one.');
+        mountainMap[ny][nx] = 0;
       }
       player.x = nx; player.y = ny;
       drawMountain();
