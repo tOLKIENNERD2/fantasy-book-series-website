@@ -13,19 +13,30 @@
         <button id="show-images-btn" style="margin-left:40px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Images</button>
         <button id="show-animals-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Animals</button>
         <button id="show-maps-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Maps</button>
-        <button id="show-game-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Video Game</button>
-        <button id="show-mountain-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">Mountain Game</button>
-        <button id="show-mountain3d-btn" style="margin-left:30px; padding: 12px 28px; font-size: 1.2rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.7); cursor: pointer;">3D Mountain</button>
     </nav>
     <script>
         document.getElementById('show-images-btn').onclick = function() { window.location.href = 'images.html'; };
         document.getElementById('show-animals-btn').onclick = function() { window.location.href = 'animals.html'; };
         document.getElementById('show-maps-btn').onclick = function() { window.location.href = 'maps.html'; };
-        document.getElementById('show-game-btn').onclick = function() { window.location.href = 'game.html'; };
-        document.getElementById('show-mountain-btn').onclick = function() { window.location.href = 'mountain-game.html'; };
-        document.getElementById('show-mountain3d-btn').onclick = function() { window.location.href = 'mountain-3d.html'; };
     </script>
     <!-- Homepage content can go here -->
+    <div id="user-message-container" style="position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.85); border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.12); padding:18px 32px; min-width:320px; z-index:200;">
+        <form id="user-message-form" style="display:flex; gap:12px;">
+            <input id="user-message-input" type="text" placeholder="Type your message..." style="flex:1; padding:10px; font-size:1.1rem; border-radius:8px; border:1px solid #ccc;">
+            <button type="submit" style="padding:10px 22px; font-size:1.1rem; border-radius:8px; border:none; background:#8d6e63; color:#fff; cursor:pointer;">Send</button>
+        </form>
+        <div id="user-message-output" style="margin-top:14px; font-size:1.15rem; color:#3e2723;"></div>
+    </div>
+    <script>
+    document.getElementById('user-message-form').onsubmit = function(e) {
+        e.preventDefault();
+        const val = document.getElementById('user-message-input').value.trim();
+        if(val) {
+            document.getElementById('user-message-output').textContent = val;
+            document.getElementById('user-message-input').value = '';
+        }
+    };
+    </script>
     <script src="index.js"></script>
 </body>
 </html>
