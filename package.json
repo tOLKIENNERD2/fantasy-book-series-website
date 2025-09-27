@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "A website dedicated to a fantasy author's book series.",
   "main": "src/index.js",
+  "homepage": "https://tOLKIENNERD2.github.io/fantasy-book-series-website",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public"
   },
   "dependencies": {
     "react": "^17.0.2",
@@ -15,7 +18,8 @@
     "react-router-dom": "^5.3.0"
   },
   "devDependencies": {
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "gh-pages": "^6.0.0"
   },
   "keywords": [
     "fantasy",
